@@ -9,8 +9,9 @@ const pool = new Pool({
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { post_id: string } }
+  context: { params: { post_id: string } }
 ) {
+  const { params } = context; // ✅ safely extract params
   const auth = await authMiddleware(req, ["admin"]);
 
   try {
