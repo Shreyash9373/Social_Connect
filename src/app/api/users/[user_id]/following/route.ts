@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import { authMiddleware } from "@/lib/auth";
+import pool from "@/lib/db"; // Import the shared pool instance
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 
 // GET /api/users/[user_id]/followers/
 // Returns a list of users who follow the user_id.
-export async function GET(
-  req: NextRequest,
-  { params }: any
-) // { params }: { params: { user_id: string } }
-{
+export async function GET(req: NextRequest, { params }: any) {
+  // { params }: { params: { user_id: string } }
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 

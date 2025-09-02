@@ -3,11 +3,12 @@ import bcrypt from "bcrypt";
 import { Pool } from "pg";
 import crypto from "crypto";
 import { sendEmail } from "@/lib/server/mailer";
+import pool from "@/lib/db"; // Import the shared pool instance
 
 // Database connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 
 export async function POST(req: NextRequest) {
   try {

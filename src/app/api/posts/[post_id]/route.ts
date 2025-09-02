@@ -3,15 +3,13 @@ import { Pool } from "pg";
 import { postUpdateSchema } from "@/lib/validator";
 import { authMiddleware } from "@/lib/auth";
 import { supabase } from "@/lib/supabaseClient"; // ✅ import supabase client
+import pool from "@/lib/db"; // Import the shared pool instance
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+// const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 // GET /api/posts/:post_id
-export async function GET(
-  req: NextRequest,
-  { params }: any
-) // { params }: { params: { post_id: string } }
-{
+export async function GET(req: NextRequest, { params }: any) {
+  // { params }: { params: { post_id: string } }
   try {
     const res = await pool.query(
       `SELECT p.id, p.user_id AS author_id, p.content, p.image_url, p.category,
@@ -37,11 +35,8 @@ export async function GET(
 }
 
 // PATCH /api/posts/:post_id → update own post
-export async function PATCH(
-  req: NextRequest,
-  { params }: any
-) //{ params }: { params: { post_id: string } }
-{
+export async function PATCH(req: NextRequest, { params }: any) {
+  //{ params }: { params: { post_id: string } }
   const auth = await authMiddleware(req);
   if ("user" in auth === false) return auth;
   const { user } = auth as any;
@@ -106,11 +101,8 @@ export async function PATCH(
 }
 
 // DELETE /api/posts/:post_id → delete own post
-export async function DELETE(
-  req: NextRequest,
-  { params }: any
-) // { params }: { params: { post_id: string } }
-{
+export async function DELETE(req: NextRequest, { params }: any) {
+  // { params }: { params: { post_id: string } }
   const auth = await authMiddleware(req);
   if ("user" in auth === false) return auth;
   const { user } = auth as any;

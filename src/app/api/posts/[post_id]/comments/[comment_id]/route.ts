@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import { authMiddleware } from "@/lib/auth";
+import pool from "@/lib/db"; // Import the shared pool instance
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 
 // DELETE /api/comments/[comment_id]/
 // Allows a user to delete their own comment.
-export async function DELETE(
-  req: NextRequest,
-  { params }: any
-) // context: { params: { comment_id: string } }
-{
+export async function DELETE(req: NextRequest, { params }: any) {
+  // context: { params: { comment_id: string } }
   //  const { params } = context; // destructure params from context
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;

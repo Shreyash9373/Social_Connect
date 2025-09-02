@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import { postCreateSchema } from "@/lib/validator";
 import { authMiddleware } from "@/lib/auth";
+import pool from "@/lib/db"; // Import the shared pool instance
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+// const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 // POST /api/posts → create new post
 export async function POST(req: NextRequest) {

@@ -1,21 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import { authMiddleware } from "@/lib/auth";
+import pool from "@/lib/db"; // Import the shared pool instance
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 
 // POST /api/users/[user_id]/follow/
 // Allows a user to follow another user.
 import { supabaseServer } from "@/lib/supabaseServer"; // service role client
 
 // POST /api/users/[user_id]/follow/
-export async function POST(
-  req: NextRequest,
-  { params }: any
-) //  context: { params: { user_id: string } }
-{
+export async function POST(req: NextRequest, { params }: any) {
+  //  context: { params: { user_id: string } }
   //  const { params } = context;
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
@@ -61,11 +59,8 @@ export async function POST(
 
 // DELETE /api/users/[user_id]/follow/
 // Allows a user to unfollow another user.
-export async function DELETE(
-  req: NextRequest,
-  { params }: any
-) // context: { params: { user_id: string } }
-{
+export async function DELETE(req: NextRequest, { params }: any) {
+  // context: { params: { user_id: string } }
   // const { params } = context; // destructure params from context
 
   const auth = await authMiddleware(req); // user can be null for public view

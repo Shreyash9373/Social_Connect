@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import pool from "@/lib/db"; // Import the shared pool instance
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 

@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import { authMiddleware } from "@/lib/auth";
+import pool from "@/lib/db"; // Import the shared pool instance
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 
-export async function POST(
-  req: NextRequest,
-  { params }: any
-) //context: { params: { user_id: string } }
-{
+export async function POST(req: NextRequest, { params }: any) {
+  //context: { params: { user_id: string } }
   //const { params } = context; // ✅ safely extract params
   const auth = await authMiddleware(req, ["admin"]);
 
