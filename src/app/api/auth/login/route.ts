@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Pool } from "pg";
-import pool from "@/lib/db"; // Import the shared pool instance
-
-// const pool = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-// });
+import { supabaseServer } from "@/lib/supabaseServer";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -21,22 +16,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Find user by email OR username
-    const result = await pool.query(
-      "SELECT * FROM users WHERE email = $1 OR username = $1",
-      [identifier]
-    );
+    // Fetch user using supabaseServer
+    const { data: users, error } = await supabaseServer
+      .from("users")
+      .select("*")
+      .or(`email.eq.${identifier},username.eq.${identifier}`)
+      .limit(1);
 
-    if (result.rows.length === 0) {
+    if (error || !users || users.length === 0) {
       return NextResponse.json(
         { error: "Invalid credentials" },
         { status: 401 }
       );
     }
 
-    const user = result.rows[0];
+    const user = users[0];
 
-    // Check if active
     if (!user.is_active) {
       return NextResponse.json(
         { error: "Please verify your email before logging in." },
@@ -53,7 +48,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Generate tokens
+    // Generate JWT tokens
     const accessToken = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
       JWT_SECRET,
@@ -67,11 +62,12 @@ export async function POST(req: NextRequest) {
     );
 
     // Update last login
-    await pool.query("UPDATE users SET last_login = NOW() WHERE id = $1", [
-      user.id,
-    ]);
+    await supabaseServer
+      .from("users")
+      .update({ last_login: new Date().toISOString() })
+      .eq("id", user.id);
 
-    // ✅ Set HttpOnly cookies instead of returning tokens in JSON
+    // Set HttpOnly cookies
     const res = NextResponse.json({
       message: "Login successful",
       user: {
