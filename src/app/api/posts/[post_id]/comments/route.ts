@@ -8,11 +8,8 @@ const pool = new Pool({
 
 // GET /api/posts/[post_id]/comments/
 // Get all active comments for a post.
-export async function GET(
-  req: NextRequest,
-  { params }: any
-) //{ params }: { params: { post_id: string } }
-{
+export async function GET(req: NextRequest, { params }: any) {
+  //{ params }: { params: { post_id: string } }
   const postId = params.post_id;
 
   try {
@@ -40,9 +37,10 @@ import { supabaseServer } from "@/lib/supabaseServer"; // service role client
 
 export async function POST(
   req: NextRequest,
-  context: { params: { post_id: string } }
-) {
-  const { params } = context;
+  { params }: any
+) //context: { params: { post_id: string } }
+{
+  // const { params } = context;
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
   const postId = params.post_id;
