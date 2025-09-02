@@ -8,11 +8,8 @@ const pool = new Pool({
 
 // GET /api/posts/[post_id]/like-status/
 // Check if the current user has liked a post and get the total like count.
-export async function GET(
-  req: NextRequest,
-  { params }: any
-) // context: { params: { post_id: string } }
-{
+export async function GET(req: NextRequest, { params }: any) {
+  // context: { params: { post_id: string } }
   // const { params } = context;
   const auth = await authMiddleware(req); // user can be null for public view
   const requester = "user" in auth ? (auth as any).user : null;
@@ -51,17 +48,14 @@ export async function GET(
 // Allow a user to like a post.
 import { supabaseServer } from "@/lib/supabaseServer"; // service role supabase client
 
-export async function POST(
-  req: NextRequest,
-  { params }: any
-) //context: { params: { post_id: string } }
-{
+export async function POST(req: NextRequest, { params }: any) {
+  //context: { params: { post_id: string } }
   //const { params } = context;
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 
   try {
-    const postId = params.post_id;
+    const postId = await params.post_id;
 
     // Start a transaction
     await pool.query("BEGIN");
@@ -115,17 +109,14 @@ export async function POST(
 
 // DELETE /api/posts/[post_id]/like/
 // Allow a user to unlike a post.
-export async function DELETE(
-  req: NextRequest,
-  { params }: any
-) //context: { params: { post_id: string } }
-{
+export async function DELETE(req: NextRequest, { params }: any) {
+  //context: { params: { post_id: string } }
   //const { params } = context;
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 
   try {
-    const postId = params.post_id;
+    const postId = await params.post_id;
     // Start a transaction
     await pool.query("BEGIN");
 
