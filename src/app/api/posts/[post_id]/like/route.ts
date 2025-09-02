@@ -10,9 +10,10 @@ const pool = new Pool({
 // Check if the current user has liked a post and get the total like count.
 export async function GET(
   req: NextRequest,
-  context: { params: { post_id: string } }
-) {
-  const { params } = context;
+  { params }: any
+) // context: { params: { post_id: string } }
+{
+  // const { params } = context;
   const auth = await authMiddleware(req); // user can be null for public view
   const requester = "user" in auth ? (auth as any).user : null;
 
@@ -52,9 +53,10 @@ import { supabaseServer } from "@/lib/supabaseServer"; // service role supabase 
 
 export async function POST(
   req: NextRequest,
-  context: { params: { post_id: string } }
-) {
-  const { params } = context;
+  { params }: any
+) //context: { params: { post_id: string } }
+{
+  //const { params } = context;
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 
@@ -115,9 +117,10 @@ export async function POST(
 // Allow a user to unlike a post.
 export async function DELETE(
   req: NextRequest,
-  context: { params: { post_id: string } }
-) {
-  const { params } = context;
+  { params }: any
+) //context: { params: { post_id: string } }
+{
+  //const { params } = context;
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 

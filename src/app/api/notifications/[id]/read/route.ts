@@ -4,8 +4,9 @@ import { supabaseServer as supabase } from "@/lib/supabaseServer";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  { params }: any
+) //{ params }: { params: { id: string } }
+{
   const auth = await authMiddleware(req);
   const user = "user" in auth ? (auth as any).user : null;
   if (!user)

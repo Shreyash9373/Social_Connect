@@ -10,8 +10,9 @@ const pool = new Pool({
 // Returns a list of users who follow the user_id.
 export async function GET(
   req: NextRequest,
-  { params }: { params: { user_id: string } }
-) {
+  { params }: any
+) //{ params }: { params: { user_id: string } }
+{
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 

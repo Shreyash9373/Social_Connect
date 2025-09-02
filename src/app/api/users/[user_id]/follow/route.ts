@@ -13,9 +13,10 @@ import { supabaseServer } from "@/lib/supabaseServer"; // service role client
 // POST /api/users/[user_id]/follow/
 export async function POST(
   req: NextRequest,
-  context: { params: { user_id: string } }
-) {
-  const { params } = context;
+  { params }: any
+) //  context: { params: { user_id: string } }
+{
+  //  const { params } = context;
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 
@@ -62,9 +63,10 @@ export async function POST(
 // Allows a user to unfollow another user.
 export async function DELETE(
   req: NextRequest,
-  context: { params: { user_id: string } }
-) {
-  const { params } = context; // destructure params from context
+  { params }: any
+) // context: { params: { user_id: string } }
+{
+  // const { params } = context; // destructure params from context
 
   const auth = await authMiddleware(req); // user can be null for public view
   const requester = "user" in auth ? (auth as any).user : null;

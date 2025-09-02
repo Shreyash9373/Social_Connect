@@ -10,9 +10,10 @@ const pool = new Pool({
 // Allows a user to delete their own comment.
 export async function DELETE(
   req: NextRequest,
-  context: { params: { comment_id: string } }
-) {
-  const { params } = context; // destructure params from context
+  { params }: any
+) // context: { params: { comment_id: string } }
+{
+  //  const { params } = context; // destructure params from context
   const auth = await authMiddleware(req);
   const requester = "user" in auth ? (auth as any).user : null;
 

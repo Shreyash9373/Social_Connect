@@ -8,9 +8,10 @@ const pool = new Pool({
 });
 export async function GET(
   req: NextRequest,
-  context: { params: { user_id: string } }
-) {
-  const { params } = context; // ✅ safely extract params
+  { params }: any
+) // context: { params: { user_id: string } }
+{
+  // const { params } = context; // ✅ safely extract params
   const auth = await authMiddleware(req, ["admin"]);
 
   try {

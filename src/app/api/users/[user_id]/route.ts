@@ -9,8 +9,9 @@ const pool = new Pool({
 // GET /api/users/[user_id]
 export async function GET(
   req: NextRequest,
-  { params }: { params: { user_id: string } }
-) {
+  { params }: any
+) // { params }: { params: { user_id: string } }
+{
   const auth = await authMiddleware(req); // user can be null for public view
   const requester = "user" in auth ? (auth as any).user : null;
 

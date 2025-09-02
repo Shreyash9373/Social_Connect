@@ -10,8 +10,9 @@ const pool = new Pool({
 // Get all active comments for a post.
 export async function GET(
   req: NextRequest,
-  { params }: { params: { post_id: string } }
-) {
+  { params }: any
+) //{ params }: { params: { post_id: string } }
+{
   const postId = params.post_id;
 
   try {
