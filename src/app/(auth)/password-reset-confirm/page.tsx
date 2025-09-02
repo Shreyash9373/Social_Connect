@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import PasswordResetConfirmForm from "./PasswordResetConfirmForm/page";
+import PasswordResetConfirmForm from "./PasswordResetConfirmComponent";
 
 export default function PasswordResetConfirmWrapper() {
   return (
