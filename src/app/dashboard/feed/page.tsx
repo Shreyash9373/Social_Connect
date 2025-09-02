@@ -22,6 +22,8 @@ interface FeedPost {
   content: string;
   created_at: string;
   author: { id: string; username: string; avatar_url?: string };
+  username: string; // <- add if API returns this
+  avatar_url?: string;
   like_count: number;
   comment_count: number;
   liked_by_me: boolean;
