@@ -187,27 +187,29 @@ export default function PostModal({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl p-0 flex flex-col md:flex-row">
+      <DialogContent className="max-w-3xl w-full p-0 flex flex-col md:flex-row">
         {/* Left: Image */}
-        <div className="flex-1 bg-black flex items-center justify-center">
+        <div className="w-full md:flex-1 bg-black flex items-center justify-center">
           <img
             src={post.image_url}
             alt="post"
-            className="max-h-[80vh] object-contain"
+            className="w-full h-auto max-h-[50vh] md:max-h-[80vh] object-contain"
           />
         </div>
 
         {/* Right: Post Info & Comments */}
-        <div className="w-full md:w-96 flex flex-col">
+        <div className="w-full md:w-96 flex flex-col max-h-[60vh] md:max-h-[80vh]">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b">
+          <div className="flex items-center justify-between p-3 sm:p-4 border-b">
             <div className="flex items-center gap-2">
               <img
                 src={post.author.avatar_url || "/avatar-default.jpg"}
                 alt={post.author.username}
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
               />
-              <span className="font-semibold">{post.author.username}</span>
+              <span className="font-semibold text-sm sm:text-base">
+                {post.author.username}
+              </span>
             </div>
             {/* 3 dots menu */}
             <div className="relative">
@@ -222,7 +224,7 @@ export default function PostModal({
                 </Button>
               )}
               {menuOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow z-50">
+                <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow z-50 text-sm">
                   <button
                     className="w-full text-left px-3 py-2 hover:bg-gray-100"
                     onClick={() => {
@@ -244,16 +246,16 @@ export default function PostModal({
           </div>
 
           {/* Caption & Comments */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4">
             {/* Caption */}
             <div className="flex items-start gap-2">
               <img
                 src={post.author.avatar_url || "/avatar-default.jpg"}
                 alt={post.author.username}
-                className="w-8 h-8 rounded-full"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
               />
               <div className="flex-1">
-                <p className="text-sm">
+                <p className="text-sm sm:text-base">
                   <span className="font-semibold">{post.author.username}</span>
                   <span className="ml-2">{post.content}</span>
                 </p>
@@ -263,16 +265,16 @@ export default function PostModal({
               </div>
             </div>
 
-            {/* Comments List */}
+            {/* Comments */}
             {comments.map((comment) => (
               <div key={comment.id} className="flex items-start gap-2">
                 <img
                   src={comment.avatar_url || "/avatar-default.jpg"}
                   alt={comment.username}
-                  className="w-8 h-8 rounded-full"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
                 />
                 <div className="flex-1">
-                  <p className="text-sm">
+                  <p className="text-sm sm:text-base">
                     <span className="font-semibold">{comment.username}</span>
                     <span className="ml-2">{comment.content}</span>
                   </p>
@@ -294,41 +296,41 @@ export default function PostModal({
             ))}
           </div>
 
-          {/* Actions (Like, Comment) & Comment Form */}
-          <div className="p-4 border-t">
-            {/* Action Buttons */}
+          {/* Actions & Comment Form */}
+          <div className="p-3 sm:p-4 border-t">
             <div className="flex items-center gap-4 mb-2">
               <div className="flex items-center gap-1">
                 <Button variant="ghost" size="icon" onClick={handleLike}>
                   <Heart
-                    className={`w-6 h-6 transition-colors ${
+                    className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
                       isLiked ? "text-red-500 fill-current" : "text-gray-500"
                     }`}
                   />
                 </Button>
-                <span className="text-sm text-gray-500">{likeCount}</span>
+                <span className="text-xs sm:text-sm text-gray-500">
+                  {likeCount}
+                </span>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => (window.location.href = "#comments-section")}
               >
-                <MessageCircle className="w-6 h-6 text-gray-500" />
+                <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
               </Button>
             </div>
 
-            {/* Comment Form */}
             <form onSubmit={handleCommentSubmit} className="flex gap-2">
               <Input
                 type="text"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Add a comment..."
-                className="flex-1"
+                className="flex-1 text-sm sm:text-base"
                 disabled={isCommenting}
               />
-              <Button type="submit" disabled={isCommenting}>
-                <Send className="w-5 h-5" />
+              <Button type="submit" size="sm" disabled={isCommenting}>
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </form>
           </div>

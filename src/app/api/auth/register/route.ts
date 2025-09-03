@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
     const user = newUser.rows[0];
 
     // Build verification link
-    const verificationLink = `${process.env.VERCEL_URL}/api/auth/verify-email?token=${verificationToken}`;
+    const verificationLink = `${process.env.APP_URL}/api/auth/verify-email?token=${verificationToken}`;
 
     // Send email
     await sendEmail(
