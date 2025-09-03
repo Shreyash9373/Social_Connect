@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     // Build reset link
     // const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/password-reset-confirm?token=${resetToken}`;
-    const resetLink = `${process.env.VERCEL_URL}/password-reset-confirm?token=${resetToken}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/password-reset-confirm?token=${resetToken}`;
 
     // Send email
     await sendEmail(

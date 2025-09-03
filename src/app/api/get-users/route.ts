@@ -16,8 +16,9 @@ export async function GET(req: NextRequest) {
     );
 
     // Filter out admins
-    const users = result.rows.filter((user) => user.role !== "admin");
-
+    const users = result.rows.filter(
+      (user) => user.role !== "admin" && user.id !== requester?.id
+    );
     return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
     console.error("GET /api/users error:", error);
