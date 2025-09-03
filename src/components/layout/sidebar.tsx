@@ -11,9 +11,10 @@ import {
   User,
   LayoutGrid,
   LogOut,
-  Users,
+  UserCircle,
   FileText,
   BarChart3,
+  Users,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient"; // anon client
@@ -80,6 +81,7 @@ export function Sidebar({ userRole }: SidebarProps) {
     { href: "/dashboard/posts/create", label: "Create", icon: PlusSquare },
     { href: "/dashboard/feed", label: "Feed", icon: LayoutGrid },
     { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
+    { href: "/dashboard/users", label: "Users", icon: UserCircle },
   ];
 
   // 🔹 Admin nav items

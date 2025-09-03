@@ -22,7 +22,7 @@ interface FeedPost {
   content: string;
   created_at: string;
   author: { id: string; username: string; avatar_url?: string };
-  username: string; // <- add if API returns this
+  username: string;
   avatar_url?: string;
   like_count: number;
   comment_count: number;
@@ -73,7 +73,6 @@ export default function FeedPage() {
       }
     } catch {
       toast.error("Failed to update like.");
-      // revert state
       setPosts(posts);
     }
   };
@@ -97,7 +96,7 @@ export default function FeedPage() {
         id: res.data.id,
         content: newComment[postId],
         created_at: new Date().toISOString(),
-        user_id: "me", // ideally use currentUserId from context
+        user_id: "me",
         username: "You",
       };
       setComments((prev) => ({
@@ -117,7 +116,6 @@ export default function FeedPage() {
         ...prev,
         [postId]: prev[postId]?.filter((c) => c.id !== commentId) || [],
       }));
-
       toast.success("Comment deleted");
     } catch {
       toast.error("Failed to delete comment.");
@@ -137,7 +135,7 @@ export default function FeedPage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto mt-6 space-y-8">
+    <div className="max-w-xl mx-auto mt-4 sm:mt-6 space-y-6 sm:space-y-8 px-2 sm:px-0">
       {posts.map((post) => (
         <div
           key={post.id}
@@ -148,23 +146,29 @@ export default function FeedPage() {
             <img
               src={post.avatar_url || "/avatar-default.jpg"}
               alt={post.username}
-              className="w-8 h-8 rounded-full"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
             />
-            <span className="font-semibold">{post.username}</span>
+            <span className="font-semibold text-sm sm:text-base">
+              {post.username}
+            </span>
           </div>
 
           {/* Post Image */}
-          <img src={post.image_url} alt="" className="w-full object-cover" />
+          <img
+            src={post.image_url}
+            alt=""
+            className="w-full max-h-[400px] sm:max-h-[600px] object-contain"
+          />
 
           {/* Actions */}
-          <div className="flex items-center gap-4 px-4 py-2">
+          <div className="flex items-center gap-4 px-3 sm:px-4 py-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => toggleLike(post)}
             >
               <Heart
-                className={`w-6 h-6 ${
+                className={`w-5 h-5 sm:w-6 sm:h-6 ${
                   post.liked_by_me ? "text-red-500 fill-red-500" : ""
                 }`}
               />
@@ -180,29 +184,32 @@ export default function FeedPage() {
                 if (!comments[post.id]) loadComments(post.id);
               }}
             >
-              <MessageCircle className="w-6 h-6" />
+              <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
             </Button>
           </div>
 
           {/* Stats */}
-          <div className="px-4 text-sm font-medium">
+          <div className="px-3 sm:px-4 text-xs sm:text-sm font-medium">
             <p>{post.like_count} likes</p>
             <p>{post.comment_count} comments</p>
           </div>
 
           {/* Caption */}
-          <div className="px-4 py-2">
+          <div className="px-3 sm:px-4 py-2 text-sm sm:text-base">
             <span className="font-semibold">{post.username}</span>{" "}
             {post.content}
           </div>
 
           {/* Comments Section */}
           {commentVisible[post.id] && (
-            <div className="px-4 pb-4">
+            <div className="px-3 sm:px-4 pb-4">
               <div className="space-y-2">
                 {comments[post.id]?.map((c) => (
-                  <div key={c.id} className="flex items-center justify-between">
-                    <p className="text-sm">
+                  <div
+                    key={c.id}
+                    className="flex items-center justify-between text-sm sm:text-base"
+                  >
+                    <p>
                       <span className="font-semibold">{c.username}</span>{" "}
                       {c.content}
                     </p>
@@ -227,6 +234,7 @@ export default function FeedPage() {
               >
                 <Input
                   type="text"
+                  className="text-sm sm:text-base"
                   value={newComment[post.id] || ""}
                   onChange={(e) =>
                     setNewComment((prev) => ({
@@ -236,8 +244,8 @@ export default function FeedPage() {
                   }
                   placeholder="Add a comment..."
                 />
-                <Button type="submit">
-                  <Send className="w-5 h-5" />
+                <Button type="submit" size="sm" className="sm:size-default">
+                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               </form>
             </div>
