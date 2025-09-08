@@ -20,15 +20,19 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient"; // anon client
 import { useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-
 interface SidebarProps {
   userRole: "user" | "admin";
 }
-
+interface User {
+  id: string;
+  username: string;
+  role?: string;
+}
 export function Sidebar({ userRole }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [count, setCount] = useState(0);
+  const [user, setUser] = useState<User | null>(null);
 
   const handleLogout = async () => {
     try {
@@ -53,16 +57,35 @@ export function Sidebar({ userRole }: SidebarProps) {
         console.error("Failed to load notifications", err);
       }
     }
+    async function fetchUser() {
+      try {
+        const res = await api.get("/api/me");
+        setUser(res.data.user); // 👈 you now have userId, username, role
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+      }
+    }
     loadCount();
+    fetchUser();
   }, []);
-
+  useEffect(() => {
+    if (pathname.startsWith("/dashboard/notifications")) {
+      setCount(0);
+    }
+  }, [pathname]);
   // 🔹 Real-time subscription
   useEffect(() => {
+    if (!user?.id) return;
     const channel = supabase
       .channel("notifications-channel")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "notifications" },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `recipient=eq.${user.id}`,
+        },
         () => {
           setCount((prev) => prev + 1);
         }
@@ -72,7 +95,7 @@ export function Sidebar({ userRole }: SidebarProps) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [user?.id]);
 
   // 🔹 User nav items
   const userNavItems = [
@@ -94,7 +117,7 @@ export function Sidebar({ userRole }: SidebarProps) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-gray-800 text-white p-6">
+      <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-gray-800 text-white p-6 fixed ">
         <h2 className="text-xl font-bold mb-6">Social Connect</h2>
         <nav className="space-y-4">
           {userRole === "user" &&
