@@ -56,7 +56,7 @@ export async function POST(req: NextRequest, { params }: any) {
   const requester = "user" in auth ? (auth as any).user : null;
 
   try {
-    const postId = await params.post_id;
+    const postId = params.post_id;
 
     // Start a transaction
     await pool.query("BEGIN");
@@ -117,7 +117,7 @@ export async function DELETE(req: NextRequest, { params }: any) {
   const requester = "user" in auth ? (auth as any).user : null;
 
   try {
-    const postId = await params.post_id;
+    const postId = params.post_id;
     // Start a transaction
     await pool.query("BEGIN");
 

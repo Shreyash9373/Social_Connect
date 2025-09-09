@@ -99,7 +99,7 @@ export function Sidebar({ userRole }: SidebarProps) {
 
   // 🔹 User nav items
   const userNavItems = [
-    { href: "/dashboard", label: "Home", icon: Home },
+    // { href: "/dashboard", label: "Home", icon: Home },
     { href: "/dashboard/profile", label: "Profile", icon: User },
     { href: "/dashboard/posts/create", label: "Create", icon: PlusSquare },
     { href: "/dashboard/feed", label: "Feed", icon: LayoutGrid },

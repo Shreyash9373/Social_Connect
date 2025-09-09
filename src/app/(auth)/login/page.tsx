@@ -26,7 +26,7 @@ export default function LoginPage() {
       await api.post("/api/auth/login", data);
       toast.success("Login successful!");
       reset();
-      router.push("/dashboard"); // 🔑 redirect to a protected page
+      router.push("/dashboard/profile"); // 🔑 redirect to a protected page
     } catch (error: any) {
       console.error(error);
 
