@@ -33,14 +33,18 @@ export function Sidebar({ userRole }: SidebarProps) {
   const pathname = usePathname();
   const [count, setCount] = useState(0);
   const [user, setUser] = useState<User | null>(null);
+  const [isLogout, setIsLogout] = useState(false);
 
   const handleLogout = async () => {
     try {
+      setIsLogout(true);
       await api.post("/api/auth/logout");
       toast.success("Logged out successfully.");
       router.push("/login");
     } catch {
       toast.error("Logout failed. Try again.");
+    } finally {
+      setIsLogout(false);
     }
   };
 
@@ -170,7 +174,7 @@ export function Sidebar({ userRole }: SidebarProps) {
             className="flex items-center gap-3 text-red-400 hover:text-red-500"
           >
             <LogOut className="w-5 h-5" />
-            <span>Logout</span>
+            <span>{isLogout ? `Logging out` : `Logout`}</span>
           </Button>
         </nav>
       </aside>

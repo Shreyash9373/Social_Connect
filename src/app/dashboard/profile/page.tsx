@@ -5,6 +5,7 @@ import { api } from "@/lib/apiClient";
 import { Button } from "@/components/ui/button";
 import PostModal from "@/components/posts/PostModal";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface UserProfile {
   id: string;
@@ -39,7 +40,7 @@ export default function ProfilePage() {
   const [selectedPost, setSelectedPost] = useState<
     UserProfile["posts"][0] | null
   >(null);
-
+  const router = useRouter();
   async function fetchProfile() {
     try {
       const res = await api.get("/api/users/me");
@@ -83,7 +84,8 @@ export default function ProfilePage() {
             <Button
               variant="outline"
               className="self-center sm:self-auto"
-              onClick={() => (window.location.href = "/dashboard/edit-profile")}
+              // onClick={() => (window.location.href = "/dashboard/edit-profile")}
+              onClick={() => router.push("/dashboard/edit-profile")}
             >
               Edit Profile
             </Button>

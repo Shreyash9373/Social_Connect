@@ -99,7 +99,9 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       // If accessToken expired and refresh failed, force login
-      window.location.href = "/login";
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }

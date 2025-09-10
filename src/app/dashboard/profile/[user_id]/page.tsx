@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { api } from "@/lib/apiClient";
 import { Button } from "@/components/ui/button";
 import PostModal from "@/components/posts/PostModal";
@@ -45,6 +45,7 @@ export default function ProfilePage() {
   const [selectedPost, setSelectedPost] = useState<
     UserProfile["posts"][0] | null
   >(null);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchProfiles() {
@@ -124,9 +125,7 @@ export default function ProfilePage() {
             {isMyProfile ? (
               <Button
                 variant="outline"
-                onClick={() =>
-                  (window.location.href = "/dashboard/edit-profile")
-                }
+                onClick={() => router.push("/dashboard/edit-profile")}
               >
                 Edit Profile
               </Button>

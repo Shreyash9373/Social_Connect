@@ -314,7 +314,7 @@ export default function PostModal({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => (window.location.href = "#comments-section")}
+                // onClick={() => (window.location.href = "#comments-section")}
               >
                 <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
               </Button>

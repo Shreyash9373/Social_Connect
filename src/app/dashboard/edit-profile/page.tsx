@@ -21,7 +21,6 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-
   // Load profile
   useEffect(() => {
     async function fetchProfile() {
