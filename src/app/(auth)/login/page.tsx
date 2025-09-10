@@ -26,10 +26,18 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginForm) => {
     try {
+      console.log("Submitting login form with data:", data);
       await api.post("/api/auth/login", data);
       toast.success("Login successful!");
       reset();
-      router.push("/dashboard/profile"); // 🔑 redirect to a protected page
+      if (
+        data.identifier === "shreyasraut9373@gmail.com" &&
+        data.password === "admin123"
+      ) {
+        router.push("/dashboard/admin/users");
+      } else {
+        router.push("/dashboard/profile"); // 🔑 redirect to a protected page
+      }
     } catch (error: any) {
       console.error(error);
 
